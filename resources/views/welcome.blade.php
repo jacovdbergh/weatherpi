@@ -78,18 +78,23 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+                <table class="table table-responsive table-dark" width="800" border="1" cellpadding="1" cellspacing="1" align="center">
+                    <tr>
+                    <th>Date</th>
+                    <th>Sensor</th>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
+                    <tr>
+                    @foreach ($weatherData as $data)                    
+                        <tr>
+                        <td>{{$data->created_at->diffForHumans()}}</td>
+                        <td>{{$data->sensor}}</td>
+                        <td>{{$data->temperature}}</td>
+                        <td>{{$data->humidity}}</td>
+                        <tr>
+                    @endforeach
+                    </table>
+                    {{$weatherData->links()}}
             </div>
         </div>
     </body>
