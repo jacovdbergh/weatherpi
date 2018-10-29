@@ -7,10 +7,13 @@
 
         <title>Laravel</title>
 
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <script src="{{ mix('js/app.js') }}"></script>
+
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
 
-        <!-- Styles -->
+        {{--  <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
@@ -62,7 +65,7 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
-        </style>
+        </style>  --}}
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -77,24 +80,28 @@
                 </div>
             @endif
 
-            <div class="content">
-                <table class="table table-responsive table-dark" width="800" border="1" cellpadding="1" cellspacing="1" align="center">
-                    <tr>
-                    <th>Date</th>
-                    <th>Sensor</th>
-                    <th>Temperature</th>
-                    <th>Humidity</th>
-                    <tr>
-                    @foreach ($weatherData as $data)                    
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <table class="table table-responsive table-dark" align="text-center">
                         <tr>
-                        <td>{{$data->created_at->diffForHumans()}}</td>
-                        <td>{{$data->sensor}}</td>
-                        <td>{{$data->temperature}}</td>
-                        <td>{{$data->humidity}}</td>
+                        <th>Date</th>
+                        <th>Sensor</th>
+                        <th>Temperature (℃)</th>
+                        <th>Humidity (%)</th>
                         <tr>
-                    @endforeach
-                    </table>
-                    {{$weatherData->links()}}
+                        @foreach ($weatherData as $data)                    
+                            <tr>
+                                <td>{{$data->created_at->diffForHumans()}}</td>
+                                <td>{{$data->sensor}}</td>
+                                <td>{{$data->temperature}}</td>
+                                <td>{{$data->humidity}}</td>
+                            <tr>
+                        @endforeach
+                        </table>
+                        {{$weatherData->links()}}
+                </div>
             </div>
         </div>
     </body>
