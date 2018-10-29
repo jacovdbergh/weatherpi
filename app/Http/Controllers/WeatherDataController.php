@@ -14,7 +14,7 @@ class WeatherDataController extends Controller
      */
     public function index()
     {
-        $weatherData = WeatherData::whereRaw('created_at >= (NOW() - INTERVAL 24 HOUR)')->orderByDesc('created_at')->paginate(10);
+        $weatherData = WeatherData::whereRaw('created_at >= (NOW() - INTERVAL 24 HOUR)')->orderByDesc('created_at')->paginate(15);
 
         return view('welcome', compact('weatherData'));
     }

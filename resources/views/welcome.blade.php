@@ -82,23 +82,27 @@
 
             <br>
             <br>
-            <div class="row">
+            <div class="container">
                 <div class="col-md-6 offset-md-3">
-                    <table class="table table-responsive table-dark" align="text-center">
-                        <tr>
-                        <th>Date</th>
-                        <th>Sensor</th>
-                        <th>Temperature (℃)</th>
-                        <th>Humidity (%)</th>
-                        <tr>
-                        @foreach ($weatherData as $data)                    
+                    <table class="table table-dark table-sm table-bordered">
+                        <thead>
                             <tr>
-                                <td>{{$data->created_at->diffForHumans()}}</td>
-                                <td>{{$data->sensor}}</td>
-                                <td>{{$data->temperature}}</td>
-                                <td>{{$data->humidity}}</td>
-                            <tr>
-                        @endforeach
+                                <th>Time</th>
+                                <th>Sensor</th>
+                                <th>Temperature (℃)</th>
+                                <th>Humidity (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($weatherData as $data)                    
+                                <tr>
+                                    <td>{{$data->created_at->diffForHumans()}}</td>
+                                    <td>{{$data->sensor}}</td>
+                                    <td align="center">{{$data->temperature}}</td>
+                                    <td align="center">{{$data->humidity}}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                         </table>
                         {{$weatherData->links()}}
                 </div>
