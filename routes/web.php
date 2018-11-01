@@ -12,3 +12,8 @@
 */
 
 Route::get('/', 'WeatherDataController@index');
+Route::get('/data-updated', 'WeatherDataController@weatherDataUpdated');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

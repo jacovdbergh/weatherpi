@@ -7,65 +7,14 @@
 
         <title>Laravel</title>
 
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <script src="{{ mix('js/app.js') }}"></script>
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <script type="text/javascript" src="http://vdbergh.dynu.com:6001/socket.io/socket.io.js"></script>
+        <script src="{{ mix('js/app.js') }}"></script>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-
-        {{--  <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>  --}}
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -83,30 +32,55 @@
             <br>
             <br>
             <div class="container">
-                <div class="col-md-6 offset-md-3">
-                    <table class="table table-dark table-sm table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Sensor</th>
-                                <th>Temperature (℃)</th>
-                                <th>Humidity (%)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($weatherData as $data)                    
-                                <tr>
-                                    <td>{{$data->created_at->diffForHumans()}}</td>
-                                    <td>{{$data->sensor}}</td>
-                                    <td align="center">{{$data->temperature}}</td>
-                                    <td align="center">{{$data->humidity}}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        </table>
-                        {{$weatherData->links()}}
+                <div class="row">
+                    <div class="col-md-3 offset-md-3 text-center">
+                        <span>Temperature (℃)</span>
+                        <h1 id="current_temp">{{$weatherData[0]->temperature}}</h1>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <span>Humidity (%)</span>
+                        <h1 id="current_humidity">{{$weatherData[0]->humidity}}</h1>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                            <hr>
+                        <table class="table table-dark table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Sensor</th>
+                                    <th>Temperature (℃)</th>
+                                    <th>Humidity (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($weatherData as $data)                    
+                                    <tr>
+                                        <td>{{$data->created_at->diffForHumans()}}</td>
+                                        <td>{{$data->sensor}}</td>
+                                        <td align="center">{{$data->temperature}}</td>
+                                        <td align="center">{{$data->humidity}}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            </table>
+                            {{$weatherData->links()}}
+                    </div>
+                </div>
+
             </div>
         </div>
     </body>
 </html>
+
+<script>
+    window.Echo.channel('private-weatherdata')
+    .listen('WeatherDataUpdate', (event) => {
+        console.log(event);
+
+        $('#current_temp').html(event.weatherData.temperature);
+        $('#current_humidity').html(event.weatherData.humidity);
+
+    });
+</script>

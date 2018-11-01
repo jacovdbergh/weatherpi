@@ -54,3 +54,18 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+import Echo from 'laravel-echo'
+
+window.io = require('socket.io-client');
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    auth:
+    {
+        headers:
+        {
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93ZWF0aGVycGkubG9jYWxcL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE1NDEwNzkwMjgsIm5iZiI6MTU0MTA3OTAyOCwianRpIjoiMDNGTjVSUHkwRkFrSXVIayIsInN1YiI6MSwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.IA8wFnjnd7sKCEDVxWbbLO7WG-tV5vmt9W3lpIy1xLc'
+        }
+    },
+    host: window.location.hostname + ':6001'
+});

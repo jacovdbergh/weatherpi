@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\WeatherData;
 use Illuminate\Http\Request;
+use App\Events\WeatherDataUpdate;
 
 class WeatherDataController extends Controller
 {
@@ -83,5 +84,12 @@ class WeatherDataController extends Controller
     public function destroy(WeatherData $weatherData)
     {
         //
+    }
+
+    public function weatherDataUpdated()
+    {
+        event(new WeatherDataUpdate(WeatherData::orderByDesc('created_at')->first()));
+
+        return response('ok', 200);
     }
 }
