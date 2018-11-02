@@ -18,57 +18,52 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
             <br>
             <br>
             <div class="container">
-                <div class="row">
-                    <div class="col-md-3 offset-md-3 text-center">
-                        <span>Temperature (℃)</span>
-                        <h1 id="current_temp">{{$weatherData[0]->temperature}}</h1>
+                <div class="col-md-6 offset-md-3">
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <span>Temperature (℃)</span>
+                            <h1 id="current_temp">{{$weatherData[0]->temperature}}</h1>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <span>Humidity (%)</span>
+                            <h1 id="current_humidity">{{$weatherData[0]->humidity}}</h1>
+                        </div>
                     </div>
-                    <div class="col-md-3 text-center">
-                        <span>Humidity (%)</span>
-                        <h1 id="current_humidity">{{$weatherData[0]->humidity}}</h1>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <small id="reading_date">last updated: {{$weatherData[0]->created_at->format('H:i')}}</small>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 offset-md-3">
-                            <hr>
-                        <table class="table table-dark table-sm table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Sensor</th>
-                                    <th>Temperature (℃)</th>
-                                    <th>Humidity (%)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($weatherData as $data)                    
+                    <div class="row">
+                        <div class="col-md-12">
+                                <hr>
+                            <table class="table table-dark table-sm table-bordered">
+                                <thead>
                                     <tr>
-                                        <td>{{$data->created_at->diffForHumans()}}</td>
-                                        <td>{{$data->sensor}}</td>
-                                        <td align="center">{{$data->temperature}}</td>
-                                        <td align="center">{{$data->humidity}}</td>
+                                        <th>Time</th>
+                                        <th>Sensor</th>
+                                        <th>Temperature (℃)</th>
+                                        <th>Humidity (%)</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                            </table>
-                            {{$weatherData->links()}}
+                                </thead>
+                                <tbody>
+                                    @foreach ($weatherData as $data)                    
+                                        <tr>
+                                            <td>{{$data->created_at->diffForHumans()}}</td>
+                                            <td>{{$data->sensor}}</td>
+                                            <td align="center">{{$data->temperature}}</td>
+                                            <td align="center">{{$data->humidity}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                </table>
+                                {{$weatherData->links()}}
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </body>
@@ -81,6 +76,7 @@
 
         $('#current_temp').html(event.weatherData.temperature);
         $('#current_humidity').html(event.weatherData.humidity);
+        $('#reading_date').html('last updated: ' + (event.weatherData.created_at).substring(11, 16));
 
     });
 </script>
