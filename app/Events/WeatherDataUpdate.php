@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Collection;
 use App\WeatherData;
 
 class WeatherDataUpdate implements ShouldBroadcast
@@ -20,7 +21,7 @@ class WeatherDataUpdate implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(WeatherData $weatherData)
+    public function __construct(Collection $weatherData)
     {
         $this->weatherData = $weatherData;
     }
