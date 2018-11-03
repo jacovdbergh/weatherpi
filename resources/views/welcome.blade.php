@@ -10,7 +10,7 @@
                 initial-temperature="{{$weatherData[0]->temperature}}"
                 initial-humidity="{{$weatherData[0]->humidity}}"
                 initial-last-updated="{{$weatherData[0]->created_at->format('H:i')}}"
-                initial-weather-data="{{json_encode($weatherData->items())}}">
+                initial-weather-data="{{json_encode($weatherData)}}">
             </weatherdata>
         </div>
     </div>
