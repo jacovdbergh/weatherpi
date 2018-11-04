@@ -15,9 +15,19 @@ class WeatherDataController extends Controller
      */
     public function index()
     {
-        $weatherData = WeatherData::whereRaw('created_at >= (NOW() - INTERVAL 24 HOUR)')->orderByDesc('created_at')->limit(15)->get();
+        $weatherData = $this->getWeatherData();
 
         return view('welcome', compact('weatherData'));
+    }
+
+    private function getWeatherData()
+    {
+        $data = WeatherData::orderByDesc('created_at')->limit(15)->get();
+        $data->each(function ($item) {
+            $item->created_at_formatted = $item->created_at->format('H:i') . ' ('.$item->created_at->diffForHumans().')';
+        });
+
+        return $data;
     }
 
     /**
@@ -88,7 +98,16 @@ class WeatherDataController extends Controller
 
     public function weatherDataUpdated()
     {
-        event(new WeatherDataUpdate(WeatherData::orderByDesc('created_at')->limit(15)->get()));
+        $weatherData = $this->getWeatherData();
+
+        event(new WeatherDataUpdate($weatherData));
+
+        return response('ok', 200);
+    }
+
+    public function takeReading()
+    {
+        shell_exec('sudo -u pi python /home/pi/DHT22-TemperatureLogger/DHT22logger.py');
 
         return response('ok', 200);
     }

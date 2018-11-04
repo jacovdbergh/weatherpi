@@ -13,6 +13,7 @@
 
 Route::get('/', 'WeatherDataController@index');
 Route::get('/data-updated', 'WeatherDataController@weatherDataUpdated');
+Route::get('/take-reading', 'WeatherDataController@takeReading');
 
 Auth::routes();
 

@@ -23,20 +23,24 @@
                         <thead>
                             <tr>
                                 <th>Time</th>
-                                <th>Sensor</th>
                                 <th>Temperature (℃)</th>
                                 <th>Humidity (%)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="data of weatherData" :key="data.id">
-                                <td>{{data.created_at}}</td>
-                                <td>{{data.sensor}}</td>
+                                <td>{{data.created_at_formatted}}</td>
                                 <td align="center">{{data.temperature}}</td>
                                 <td align="center">{{data.humidity}}</td>
                             </tr>
                         </tbody>
                         </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-primary" v-on:click="updateData">Update</button>
                 </div>
             </div>
     </div>
@@ -61,10 +65,16 @@
             }
         },
 
+        methods: {
+            updateData: function (event) {
+                axios.get('/take-reading');
+            }
+        },
+
         mounted() {
             window.Echo.channel('private-weatherdata')
                 .listen('WeatherDataUpdate', (event) => {
-                    var data = event.weatherData.reverse();
+                    var data = event.weatherData;
                     this.latestTemperature = data[0].temperature;
                     this.latestHumidity = data[0].humidity;
                     this.lastUpdated = (data[0].created_at).substring(11, 16);
