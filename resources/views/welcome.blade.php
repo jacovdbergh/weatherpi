@@ -14,6 +14,7 @@
             </weatherdata>
         </div>
         <div class="col-md-6">
+            <br>
             <canvas id="temperature-chart"></canvas>
         </div>
     </div>
