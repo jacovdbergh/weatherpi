@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\WeatherData;
 use Illuminate\Http\Request;
 use App\Events\WeatherDataUpdate;
+use DB;
 
 class WeatherDataController extends Controller
 {
@@ -17,15 +18,20 @@ class WeatherDataController extends Controller
     {
         $weatherData = $this->getWeatherData();
 
-        return view('welcome', compact('weatherData'));
+        $chartData = WeatherData::orderByDesc('created_at')->whereRaw(DB::raw('(`id`) % 20 = 1'))->limit(200)->get(['created_at AS x', 'temperature AS y'])
+        ->toJson();
+
+        return view('welcome', compact('weatherData', 'chartData'));
     }
 
     private function getWeatherData()
     {
         $data = WeatherData::orderByDesc('created_at')->limit(15)->get();
         $data->each(function ($item) {
-            $item->created_at_formatted = $item->created_at->format('H:i') . ' ('.$item->created_at->diffForHumans().')';
+            $item->created_at_formatted = $item->created_at->format('H:i');
         });
+
+        
 
         return $data;
     }

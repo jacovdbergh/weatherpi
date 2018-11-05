@@ -5,7 +5,7 @@
 <br>
 <div class="container">
     <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-6">
             <weatherdata
                 initial-temperature="{{$weatherData[0]->temperature}}"
                 initial-humidity="{{$weatherData[0]->humidity}}"
@@ -13,6 +13,75 @@
                 initial-weather-data="{{json_encode($weatherData)}}">
             </weatherdata>
         </div>
+        <div class="col-md-6">
+            <canvas id="temperature-chart"></canvas>
+        </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    window.chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
+    };
+
+    var timeFormat = 'YYY/MM/DD HH:mm';
+
+    var color = Chart.helpers.color;
+    var config = {
+        type: 'line',
+        data: {
+            label: 'Temperature',
+            datasets: [{
+                label: 'Temperature',
+                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.red,
+                fill: false,
+                data: JSON.parse('{!!$chartData!!}'),
+            }]
+        },
+        options: {
+            title: {
+                text: 'Chart.js Time Scale'
+            },
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        parser: timeFormat,
+                        // round: 'day'
+                        tooltipFormat: 'MMM D HH:mm',
+                        unit: 'day',
+                        displayFormats: {
+                            day: 'MMM D',
+                          }
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Degrees Celsius'
+                    }
+                }]
+            },
+        }
+    };
+
+    window.onload = function() {
+        var ctx = document.getElementById('temperature-chart').getContext('2d');
+        window.myLine = new Chart(ctx, config);
+
+    };
+</script>
 @endsection
