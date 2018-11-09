@@ -29,8 +29,8 @@ class WeatherDataController extends Controller
             WHERE created_at >= CURDATE() - INTERVAL 7 DAY
             GROUP BY FLOOR(UNIX_TIMESTAMP(DATE_FORMAT(created_at - INTERVAL 6 HOUR,'%Y-%m-%d-%H:%i:00')) / 43200)"));
 
-        $avgDayTemp = $avgData->nth(2)->toJson();
-        $avgNightTemp = $avgData->nth(2, 1)->toJson();
+        $avgDayTemp = $avgData->nth(2, 1)->toJson();
+        $avgNightTemp = $avgData->nth(2)->toJson();
 
         return view('welcome', compact('weatherData', 'chartData', 'avgDayTemp', 'avgNightTemp'));
     }
