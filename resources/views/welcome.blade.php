@@ -14,8 +14,16 @@
             </weatherdata>
         </div>
         <div class="col-md-6">
-            <br>
-            <canvas id="temperature-chart"></canvas>
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <canvas id="temperature-chart"></canvas>
+                </div>
+                <div class="col-md-12">
+                    <br>
+                    <canvas id="avg-chart"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -50,7 +58,7 @@
         },
         options: {
             title: {
-                text: 'Chart.js Time Scale'
+                text: 'Weather PI temparture charts'
             },
             scales: {
                 xAxes: [{
@@ -78,10 +86,62 @@
             },
         }
     };
+    var avgConfig = {
+        type: 'line',
+        data: {
+            label: 'Average Temperatures',
+            datasets: [{
+                label: 'Avg day temp',
+                backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.red,
+                fill: false,
+                data: JSON.parse('{!!$avgDayTemp!!}'),
+            },                
+            {
+                label: 'Avg night temp',
+                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: window.chartColors.blue,
+                fill: false,
+                data: JSON.parse('{!!$avgNightTemp!!}'),
+            }]
+        },
+        options: {
+            title: {
+                text: 'Weather PI average temp charts'
+            },
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        parser: timeFormat,
+                        // round: 'day'
+                        tooltipFormat: 'MMMM D',
+                        unit: 'day',
+                        displayFormats: {
+                            day: 'MMM D',
+                          }
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Degrees Celsius'
+                    }
+                }]
+            },
+        }
+    };
 
     window.onload = function() {
         var ctx = document.getElementById('temperature-chart').getContext('2d');
         window.myLine = new Chart(ctx, config);
+
+        var ctx = document.getElementById('avg-chart').getContext('2d');
+        window.myLine = new Chart(ctx, avgConfig);
 
     };
 </script>

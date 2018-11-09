@@ -6,6 +6,7 @@ use App\WeatherData;
 use Illuminate\Http\Request;
 use App\Events\WeatherDataUpdate;
 use DB;
+use Carbon\Carbon;
 
 class WeatherDataController extends Controller
 {
@@ -18,10 +19,20 @@ class WeatherDataController extends Controller
     {
         $weatherData = $this->getWeatherData();
 
-        $chartData = WeatherData::orderByDesc('created_at')->whereRaw(DB::raw('(`id`) % 20 = 1'))->limit(200)->get(['created_at AS x', 'temperature AS y'])
+        $chartData = WeatherData::where('created_at', '>=', Carbon::now()->subWeek())->whereRaw(DB::raw('(`id`) % 20 = 1'))->orderByDesc('created_at')->get(['created_at AS x', 'temperature AS y'])
         ->toJson();
 
-        return view('welcome', compact('weatherData', 'chartData'));
+        $avgData = collect(DB::select("SELECT
+            ROUND(AVG(temperature), 1) AS y,
+            DATE_FORMAT(FROM_UNIXTIME(AVG(UNIX_TIMESTAMP(created_at))), '%Y-%m-%d-%H:00:00') AS x
+            FROM weather_data
+            WHERE created_at >= CURDATE() - INTERVAL 7 DAY
+            GROUP BY FLOOR(UNIX_TIMESTAMP(DATE_FORMAT(created_at - INTERVAL 6 HOUR,'%Y-%m-%d-%H:%i:00')) / 43200)"));
+
+        $avgDayTemp = $avgData->nth(2)->toJson();
+        $avgNightTemp = $avgData->nth(2, 1)->toJson();
+
+        return view('welcome', compact('weatherData', 'chartData', 'avgDayTemp', 'avgNightTemp'));
     }
 
     private function getWeatherData()
