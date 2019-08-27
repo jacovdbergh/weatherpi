@@ -1,4 +1,4 @@
-<p align="center"><img src="svg/weather.svg"></p>
+<p align="center"><img src="public/svg/weather.svg"></p>
 
 ## Weather Pi
 
