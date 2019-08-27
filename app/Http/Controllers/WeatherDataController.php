@@ -19,7 +19,7 @@ class WeatherDataController extends Controller
     {
         $weatherData = $this->getWeatherData();
 
-        $chartData = WeatherData::where('created_at', '>=', Carbon::now()->subWeek())->whereRaw(DB::raw('(`id`) % 20 = 1'))->orderByDesc('created_at')->get(['created_at AS x', 'temperature AS y'])
+        $chartData = WeatherData::where('created_at', '>=', Carbon::now()->startOfDay()->subWeek())->whereRaw(DB::raw('(`id`) % 20 = 1'))->orderByDesc('created_at')->get(['created_at AS x', 'temperature AS y'])
         ->toJson();
 
         $avgData = collect(DB::select("SELECT
