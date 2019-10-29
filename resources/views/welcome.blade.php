@@ -9,6 +9,7 @@
             <weatherdata
                 initial-temperature="{{$weatherData[0]->temperature}}"
                 initial-humidity="{{$weatherData[0]->humidity}}"
+                initial-power="{{$currentPowerUsage}}"
                 initial-last-updated="{{$weatherData[0]->created_at->format('H:i')}}"
                 initial-weather-data="{{json_encode($weatherData)}}">
             </weatherdata>

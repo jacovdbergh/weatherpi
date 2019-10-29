@@ -1,13 +1,17 @@
 <template>
     <div class="container">
             <div class="row">
-                <div class="col-md-6 text-center">
+                <div class="col-md-4 text-center">
                     <span>Temperature (℃)</span>
                     <h1 id="current_temp">{{latestTemperature}}</h1>
                 </div>
-                <div class="col-md-6 text-center">
+                <div class="col-md-4 text-center">
                     <span>Humidity (%)</span>
                     <h1 id="current_humidity">{{latestHumidity}}</h1>
+                </div>
+                <div class="col-md-4 text-center">
+                    <span>Power Usage (W)</span>
+                    <h1 id="current_humidity">{{initialPower}}</h1>
                 </div>
             </div>
             <div class="row">
@@ -51,9 +55,10 @@
 
         props: [
             'initialTemperature',
+            'initialPower',
             'initialHumidity',
             'initialLastUpdated',
-            'initialWeatherData'
+            'initialWeatherData',
         ],
 
         data() {

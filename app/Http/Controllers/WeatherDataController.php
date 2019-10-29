@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\WeatherData;
 use Illuminate\Http\Request;
 use App\Events\WeatherDataUpdate;
+use App\PowerData;
 use DB;
 use Carbon\Carbon;
 
@@ -32,7 +33,9 @@ class WeatherDataController extends Controller
         $avgDayTemp = $avgData->nth(2, 1)->toJson();
         $avgNightTemp = $avgData->nth(2)->toJson();
 
-        return view('welcome', compact('weatherData', 'chartData', 'avgDayTemp', 'avgNightTemp'));
+        $currentPowerUsage = round(PowerData::latest()->first()->power);
+
+        return view('welcome', compact('weatherData', 'chartData', 'avgDayTemp', 'avgNightTemp', 'currentPowerUsage'));
     }
 
     private function getWeatherData()
