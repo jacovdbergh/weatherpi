@@ -24,16 +24,15 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me'); 
+    Route::post('me', 'AuthController@me');
 });
 
 Route::post('healthcheck', function () {
-    
     foreach (request()->all() as $measurement) {
         $powerData = new PowerData();
         $powerData->sensor = "Fake Wemos D1 Mini";
         $powerData->current = $measurement['currentValue'];
-        $powerData->power = $measurement['currentValue'] * 230;
+        $powerData->power = $measurement['currentValue'] * 237;
         $powerData->created_at = $measurement['timestamp'];
         $powerData->save();
     }
